@@ -87,7 +87,6 @@ const AllProductPage = async () => {
 
   return (
     <main className='grid justify-center'>
-        <Navbar />
         <p className='text-[48px] font-[600] leading-[64.8px] text-[#323232] text-center m-6'>See Products</p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-1 p-1 m-20 w-[1300px]">
             {products.map(product => (

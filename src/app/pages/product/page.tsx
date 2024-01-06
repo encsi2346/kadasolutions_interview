@@ -1,5 +1,4 @@
 import React from 'react';
-import DetailsButton from "@/app/components/DetailsButton";
 import Navbar from "@/app/components/Navbar";
 import AddButton from "@/app/components/AddButton";
 
@@ -34,7 +33,6 @@ const ProductPage = ({ id, title, description, price, discountPercentage, rating
 
     return (
         <div>
-            <Navbar />
             <div className='flex grid-cols-2 m-20 align-center justify-center'>
                 <div className='w-[620px] h-[481px]'>
                     Carousel
@@ -48,8 +46,12 @@ const ProductPage = ({ id, title, description, price, discountPercentage, rating
                     <p className="text-[24px] font-[500] leading-[32.4px] text-black/[.6]">Stock: {coreProduct.stock}</p>
                     <p className="text-[24px] font-[500] leading-[32.4px] text-black/[.6]">Brand: {coreProduct.brand}</p>
                     <p className="text-[24px] font-[500] leading-[32.4px] text-black/[.6]">Category: {coreProduct.category}</p>
-                    <p className="rounded-full bg-[#6100FF] text-white font-[600] text-[14px] leading-[18.9px] py-1 px-4">{coreProduct.discountPercentage}%</p>
-                    <div className="flex align-center">
+                    <p>
+                        <a className="rounded-full bg-[#6100FF] text-white font-[600] text-[20px] leading-[27px] py-1 px-4">
+                            {coreProduct.discountPercentage}%
+                        </a>
+                    </p>
+                    <div className="flex justify-between align-center">
                         <p className="text-[64px] font-[600] leading-[86.4px]">{coreProduct.price} $</p>
                         <AddButton text={'Add to cart'} />
                     </div>
