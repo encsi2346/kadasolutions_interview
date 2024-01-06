@@ -1,5 +1,6 @@
 import ProductCard from "@/app/components/ProductCard";
 import Navbar from "@/app/components/Navbar";
+import {useState} from "react";
 
 interface Product {
     id: number;
@@ -16,6 +17,8 @@ interface Product {
 }
 
 const AllProductPage = async () => {
+
+
     const res = await fetch('https://dummyjson.com/products');
     const products: Product[] = [
         {

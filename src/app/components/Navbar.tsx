@@ -1,6 +1,17 @@
+'use client';
 import React from 'react';
+import {AppDispatch, useAppSelector} from '@/app/redux/store';
+import {useDispatch} from "react-redux";
+import {logOut} from "@/app/redux/authSlice";
 
 const Navbar = () => {
+    const dispatch = useDispatch<AppDispatch>();
+    const email = useAppSelector((state) => state.authReducer.value.email);
+
+    const handleLogOut = () => {
+        dispatch(logOut());
+    }
+
     return (
         <header>
             <div className="navbar bg-base-100">
@@ -27,11 +38,11 @@ const Navbar = () => {
                     </div>
                     <div className="dropdown dropdown-end">
                         <div tabIndex={0} role="button" className="btn btn-ghost">
-                            <a>user.name</a>
+                            <a>{email}</a>
                         </div>
                         <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
                             <li>
-                                <a>Logout</a>
+                                <a onClick={handleLogOut}>Logout</a>
                             </li>
                         </ul>
                     </div>
