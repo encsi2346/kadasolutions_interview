@@ -1,16 +1,41 @@
 'use client';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {AppDispatch, useAppSelector} from '@/app/redux/store';
 import {useDispatch} from "react-redux";
 import {logOut} from "@/app/redux/authSlice";
+import {signOut} from "@firebase/auth";
+import {auth} from "@/app/firebase";
+import { db } from "@/app/firebase";
+import { collection } from 'firebase/firestore';
+import { onSnapshot } from 'firebase/firestore';
 
 const Navbar = () => {
+    const userId = auth?.currentUser?.uid;
     const dispatch = useDispatch<AppDispatch>();
     const email = useAppSelector((state) => state.authReducer.value.email);
+    const [cartItems, setCartItems] = useState([]);
 
     const handleLogOut = () => {
-        dispatch(logOut());
+        try{
+            signOut(auth).then(() => {
+                dispatch(logOut());
+            }).catch((error) => {
+                console.log(error);
+            });
+        } catch(error) {
+            console.log(error);
+        }
     }
+
+    useEffect(() => {
+        const userFavouriteRef = collection(db, `${userId}`);
+        const unsubscribe = onSnapshot(userFavouriteRef, snapshot => {
+            setCartItems(snapshot.docs.map(doc => ({ id: doc.id, data: doc.data() })));
+        })
+        return () => {
+            unsubscribe();
+        }
+    }, [userId, cartItems])
 
     return (
         <header>
@@ -23,12 +48,12 @@ const Navbar = () => {
                         <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
                             <div className="indicator">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
-                                <span className="badge badge-sm indicator-item">8</span>
+                                <span className="badge badge-sm indicator-item">{cartItems.length}</span>
                             </div>
                         </div>
                         <div tabIndex={0} className="mt-3 z-[1] card card-compact dropdown-content w-52 bg-base-100 shadow">
                             <div className="card-body">
-                                <span className="font-bold text-lg">8 Items</span>
+                                <span className="font-bold text-lg">{cartItems.length} Items</span>
                                 <span className="text-info">Subtotal: $999</span>
                                 <div className="card-actions">
                                     <button className="btn btn-primary btn-block">View cart</button>

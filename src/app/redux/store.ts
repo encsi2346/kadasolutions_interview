@@ -3,9 +3,9 @@ import authReducer from "./authSlice";
 import {TypedUseSelectorHook, useSelector} from "react-redux";
 
 export const store = configureStore({
-        reducer: {
-           authReducer,
-        },
+    reducer: {
+       authReducer,
+    },
 });
 
 export type RootState = ReturnType<typeof store.getState>;

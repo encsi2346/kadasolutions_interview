@@ -1,11 +1,13 @@
 'use client';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import AddButton from "@/app/components/AddButton";
-import { auth } from '../../firebase';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, fetchSignInMethodsForEmail } from 'firebase/auth';
-import { logIn, logOut } from '@/app/redux/authSlice';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import { logIn, addCartItem } from '@/app/redux/authSlice';
 import { useDispatch } from 'react-redux';
 import {AppDispatch, useAppSelector} from "@/app/redux/store";
+import { addDoc, deleteDoc, doc, getDocs, onSnapshot } from "firebase/firestore";
+import { auth, db } from "../../firebase";
+import { collection } from 'firebase/firestore';
 
 interface Props {
     id: number;
@@ -22,8 +24,11 @@ interface Props {
 }
 
 const ProductPage = ({ id, title, description, price, discountPercentage, rating, stock, brand, category, thumbnail, images }: Props) => {
+    const userId = auth?.currentUser?.uid;
+
     const dispatch = useDispatch<AppDispatch>();
     const isAuth = useAppSelector((state) => state.authReducer.value.isAuth);
+    const cartItems = useAppSelector((state) => state.authReducer.value.cartItems);
 
     const [pageType, setPageType] = useState("login");
     const isLogin = pageType === "login";
@@ -77,9 +82,9 @@ const ProductPage = ({ id, title, description, price, discountPercentage, rating
         }
     };
 
-    const handleAddToCart = () => {
+    const handleAddToCart = (itemData) => {
         if (isAuth) {
-            console.log('logged');
+            addCartDatabase({id: 3, title: 'Iphone'}); //TODO
         } else {
             if (document) {
                 (document.getElementById('login_modal') as HTMLFormElement).showModal();
@@ -92,6 +97,49 @@ const ProductPage = ({ id, title, description, price, discountPercentage, rating
             (document.getElementById('login_modal') as HTMLFormElement).close();
         }
     }
+
+    const addCartDatabase = (itemData) => {
+        if (itemData.id === ''){
+            return;
+        }
+
+        const userCartItemsRef = collection(db, `${userId}`);
+        const id = itemData.id;
+        const savedItem = {
+            id: itemData.id,
+            title: itemData.title
+        }
+        getDocs(userCartItemsRef)
+            .then(response => {
+                const tempArray = response.docs.map(doc => (
+                    { id: doc.id, data: doc.data() }
+                ))
+
+                const foundItem = tempArray.find(element => element.data.savedItem.id === id);
+                (foundItem === undefined ? (
+                    addDoc(userCartItemsRef, {savedItem})
+                        .then(response => {
+                            console.log('You added: ', response.id);
+                        })
+                        .catch(error => {
+                            console.log(error.message);
+                        })
+                ) : (<div/>))
+            })
+            .catch(error => {
+                console.log('You already saved it:', id);
+            })
+    }
+
+    useEffect(() => {
+        const userCartItemsRef = collection(db, `${userId}`);
+        const unsubscribe = onSnapshot(userCartItemsRef, snapshot => {
+            addCartItem(snapshot.docs.map(doc => ({ id: doc.id, data: doc.data() })));
+        })
+        return () => {
+            unsubscribe();
+        }
+    }, []);
 
     return (
         <div>

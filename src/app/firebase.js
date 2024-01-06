@@ -12,10 +12,11 @@ const firebaseConfig = {
     projectId: "kadasolutions-interview-50bf6",
     storageBucket: "kadasolutions-interview-50bf6.appspot.com",
     messagingSenderId: "792186666755",
-    appId: "1:792186666755:web:d6fd5313315d476af3f336"
+    appId: "1:792186666755:web:f396ac25cf9430aaf3f336",
+    databaseURL: "https://kadasolutions-interview-50bf6-default-rtdb.europe-west1.firebasedatabase.app",
+    returnSecureToken: true,
 };
 
-// Initialize Firebase
 const FireBase = firebase.initializeApp(firebaseConfig);
 export const auth = getAuth(FireBase);
 export const db = getFirestore(FireBase);
