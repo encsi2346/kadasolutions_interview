@@ -1,10 +1,8 @@
 'use client';
 import React, {useEffect, useState} from 'react';
 import AddButton from "@/app/components/AddButton";
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
-import { logIn, addCartItem } from '@/app/redux/authSlice';
-import { useDispatch } from 'react-redux';
-import {AppDispatch, useAppSelector} from "@/app/redux/store";
+import { addCartItem } from '@/app/redux/authSlice';
+import { useAppSelector} from "@/app/redux/store";
 import { addDoc, deleteDoc, doc, getDocs, onSnapshot } from "firebase/firestore";
 import { auth, db } from "./../firebase";
 import { collection } from 'firebase/firestore';
@@ -12,55 +10,16 @@ import {Product} from "../../../common.types";
 import Modal from "@/app/components/Modal";
 import LoginForm from "@/app/components/LoginForm";
 import ImageViewer from "@/app/components/ImageViewer";
+import {toast, ToastContainer} from "react-toastify";
 
-type Props = {
+interface Props {
     product: Product,
 }
 
 const ProductPage = ({ product }: Props) => {
     const userId = auth?.currentUser?.uid;
-
-    const dispatch = useDispatch<AppDispatch>();
     const isAuth = useAppSelector((state) => state.authReducer.value.isAuth);
-
-    const [pageType, setPageType] = useState("login");
-    const isLogin = pageType === "login";
-    const isRegister = pageType === "register";
-
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
     const [showModal, setShowModal] = useState(false);
-
-    const handleFormSubmit = (e) => {
-        e.preventDefault();
-        if (isLogin) {
-            try{
-                signInWithEmailAndPassword(auth, email, password)
-                    .then((userCredential) => {
-                        dispatch(logIn(email));
-                        handleCloseModal();
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                        console.log('didnt find email');
-                    });
-            } catch (error) {
-                console.log(error);
-            }
-        } else if (isRegister) {
-            try{
-                createUserWithEmailAndPassword(auth, email, password)
-                    .then((userCredential) => {
-                        console.log('successfully registered');
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
-            } catch (error) {
-                console.log(error);
-            }
-        }
-    };
 
     const handleAddToCart = (itemData) => {
         if (isAuth) {
@@ -97,15 +56,21 @@ const ProductPage = ({ product }: Props) => {
                 (foundItem === undefined ? (
                     addDoc(userCartItemsRef, {savedItem})
                         .then(response => {
-                            console.log('You added: ', response.id);
+                            toast.success('You have successfully added a product to your shopping cart!', {
+                                position: toast.POSITION.BOTTOM_RIGHT
+                            });
                         })
                         .catch(error => {
-                            console.log(error.message);
+                            toast.error('Oops, something went wrong!', {
+                                position: toast.POSITION.BOTTOM_RIGHT
+                            });
                         })
                 ) : (<div/>))
             })
             .catch(error => {
-                console.log('You already saved it:', id);
+                toast.error('You have already added the product to your cart!', {
+                    position: toast.POSITION.BOTTOM_RIGHT
+                });
             })
     }
 
@@ -146,9 +111,10 @@ const ProductPage = ({ product }: Props) => {
                 </div>
             </div>
 
-            <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
-                <LoginForm onClose={() => setShowModal(false)}/>
+            <Modal isVisible={showModal} onClose={handleCloseModal}>
+                <LoginForm onClose={handleCloseModal}/>
             </Modal>
+            <ToastContainer />
         </div>
     );
 };
