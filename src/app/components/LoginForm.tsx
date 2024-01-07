@@ -1,12 +1,14 @@
 "use client";
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth";
 import {auth} from "@/app/firebase";
 import {logIn} from "@/app/redux/authSlice";
 import {useDispatch} from "react-redux";
 import {AppDispatch, useAppSelector} from "@/app/redux/store";
 import {toast, ToastContainer} from "react-toastify";
-
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { async } from "@firebase/util";
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 const LoginPage = ({onClose}) => {
     const userId = auth?.currentUser?.uid;
@@ -20,6 +22,18 @@ const LoginPage = ({onClose}) => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [user, setUser] = useAuthState(auth);
+
+    const googleAuth = new GoogleAuthProvider();
+    const googleLogin = async () => {
+        const result = await signInWithPopup(auth, googleAuth);
+        console.log(user.email);
+        dispatch(logIn(user.email));
+        handleCloseModal();
+        toast.success('You have successfully logged in!', {
+            position: toast.POSITION.BOTTOM_RIGHT
+        });
+    }
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
@@ -107,11 +121,14 @@ const LoginPage = ({onClose}) => {
                         </a>
                     </label>
                 </div>
-                <div className="mt-6 flex gap-10 justify-center">
-                    <button className="btn w-[200px]" onClick={handleCloseModal}>
+                <div className="mt-6 flex gap-5 justify-center">
+                    <button className="btn w-[120px]" onClick={handleCloseModal}>
                         Close
                     </button>
-                    <button className="btn btn-primary w-[200px]" type="submit">
+                    <button className="btn btn-primary w-[150px]" onClick={googleLogin}>
+                        Sign in with Google
+                    </button>
+                    <button className="btn btn-primary w-[150px]" type="submit">
                         {isLogin ? "LOGIN" : "REGISTER"}
                     </button>
                 </div>
