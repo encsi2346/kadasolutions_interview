@@ -11,6 +11,7 @@ import { collection } from 'firebase/firestore';
 import {Product} from "../../../common.types";
 import Modal from "@/app/components/Modal";
 import LoginForm from "@/app/components/LoginForm";
+import ImageViewer from "@/app/components/ImageViewer";
 
 type Props = {
     product: Product,
@@ -122,7 +123,7 @@ const ProductPage = ({ product }: Props) => {
         <div>
             <div className='flex grid-cols-2 m-20 align-center justify-center'>
                 <div className='w-[620px] h-[481px]'>
-                    Carousel
+                    <ImageViewer images={product.images} />
                 </div>
                 <div className='space-y-3'>
                     <div className="flex justify-between">
