@@ -56,6 +56,7 @@ const AllProductPage = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-1 p-1 m-10 w-[1300px]">
             {isLoading ? (
                 Array(4).fill(0).map((el, index) => (
+                    // eslint-disable-next-line react/jsx-key
                     <div className="card card-compact w-[305px] bg-white border border-solid border-[#DBDBDB] rounded-[6.46px] m-5">
                         <div className="mx-2 mt-2 rounded-[6.46px] bg-gray-300 w-[282.21px] h-[149.18px] animate-pulse"/>
                         <div className="card-body m-5">

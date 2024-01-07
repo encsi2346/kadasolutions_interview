@@ -4,7 +4,7 @@ import {createUserWithEmailAndPassword, signInWithEmailAndPassword} from "fireba
 import {auth} from "@/app/firebase";
 import {logIn} from "@/app/redux/authSlice";
 import {useDispatch} from "react-redux";
-import {AppDispatch, useAppSelector} from "@/app/redux/store";
+import {AppDispatch} from "@/app/redux/store";
 import {toast, ToastContainer} from "react-toastify";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -17,11 +17,12 @@ const LoginPage = ({onClose}) => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [user, setUser] = useAuthState(auth);
+    const [user] = useAuthState(auth);
 
     const googleAuth = new GoogleAuthProvider();
     const googleLogin = async () => {
         const result = await signInWithPopup(auth, googleAuth);
+        console.log(result);
         dispatch(logIn(user.email));
         handleCloseModal();
 
