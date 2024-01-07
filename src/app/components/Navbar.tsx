@@ -54,8 +54,9 @@ const Navbar = () => {
     }, [userId, cartItems])
 
     useEffect(() => {
-        console.log('price', cartItems[0]);
-    }, [setCartItems])
+        const sum = cartItems.reduce((total, product) => total + product.price, 0);
+        setSubtotal(sum);
+    }, [subtotal, setCartItems])
 
     return (
         <header>
@@ -74,7 +75,7 @@ const Navbar = () => {
                         <div tabIndex={0} className="mt-3 z-[1] card card-compact dropdown-content w-52 bg-base-100 shadow">
                             <div className="card-body">
                                 <span className="font-bold text-lg">{cartItems.length} Items</span>
-                                <span className="text-info">Subtotal: {subtotal}</span>
+                                <span className="text-info">Subtotal: {subtotal} $</span>
                                 <div className="card-actions">
                                     <button className="btn btn-primary btn-block">View cart</button>
                                 </div>

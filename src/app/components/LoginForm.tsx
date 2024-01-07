@@ -1,5 +1,5 @@
 "use client";
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth";
 import {auth} from "@/app/firebase";
 import {logIn} from "@/app/redux/authSlice";
@@ -7,15 +7,10 @@ import {useDispatch} from "react-redux";
 import {AppDispatch, useAppSelector} from "@/app/redux/store";
 import {toast, ToastContainer} from "react-toastify";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { async } from "@firebase/util";
 import { useAuthState } from 'react-firebase-hooks/auth';
 
 const LoginPage = ({onClose}) => {
-    const userId = auth?.currentUser?.uid;
-
     const dispatch = useDispatch<AppDispatch>();
-    const isAuth = useAppSelector((state) => state.authReducer.value.isAuth);
-
     const [pageType, setPageType] = useState("login");
     const isLogin = pageType === "login";
     const isRegister = pageType === "register";
@@ -27,9 +22,9 @@ const LoginPage = ({onClose}) => {
     const googleAuth = new GoogleAuthProvider();
     const googleLogin = async () => {
         const result = await signInWithPopup(auth, googleAuth);
-        console.log(user.email);
         dispatch(logIn(user.email));
         handleCloseModal();
+
         toast.success('You have successfully logged in!', {
             position: toast.POSITION.BOTTOM_RIGHT
         });

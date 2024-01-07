@@ -28,7 +28,7 @@ const ImageViewer = ({ images }: Props) => {
     return (
         <div className='max-w-[620px] h-[481px] w-full m-auto relative group'>
             <div style={{backgroundImage: `url(${images[currentIndex]})`}}
-                className=' w-[502.4px] h-[481px] rounded-2xl bg-auto  bg-no-repeat bg-center bg-cover duration-500'
+                className=' w-[502.4px] h-[481px] rounded-[6.01px] bg-auto  bg-no-repeat bg-center bg-cover duration-500'
             />
 
             <div className='absolute top-[50%] -translate-x-0 translate-y-[-50%] left-[-10%] text-2xl p-2 hover:text-[#323232] text-[#323232]/[.6] cursor-pointer'>

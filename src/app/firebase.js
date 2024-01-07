@@ -5,7 +5,6 @@ import 'firebase/compat/firestore';
 import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth'
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyAIkrl_wyO_MZ0dssUHOsTwiGm2fXhPTAI",
     authDomain: "kadasolutions-interview-50bf6.firebaseapp.com",

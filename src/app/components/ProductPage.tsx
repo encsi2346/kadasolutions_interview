@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import AddButton from "@/app/components/AddButton";
 import { addCartItem } from '@/app/redux/authSlice';
 import { useAppSelector} from "@/app/redux/store";
-import { addDoc, deleteDoc, doc, getDocs, onSnapshot } from "firebase/firestore";
+import { addDoc, getDocs, onSnapshot } from "firebase/firestore";
 import { auth, db } from "./../firebase";
 import { collection } from 'firebase/firestore';
 import {Product} from "../../../common.types";
@@ -35,7 +35,6 @@ const ProductPage = ({ product }: Props) => {
     }
 
     const addCartDatabase = (itemData) => {
-        console.log(itemData);
         if (itemData.id === ''){
             return;
         }

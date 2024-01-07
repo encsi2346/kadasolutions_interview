@@ -43,15 +43,15 @@ export const authSlice = createSlice({
             if (state.email) {
                 state.email.cartItems = action.payload.cartItems;
             } else {
-                console.log('hiba', state.email);
-            };
+                console.log('error');
+            }
         },
         setEmptyCart: (state) => {
             if (state.email) {
                 state.email.cartItems = [];
             } else {
-                console.log('hiba', state.email);
-            };
+                console.log('error');
+            }
         }
     },
 });
