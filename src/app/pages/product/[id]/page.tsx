@@ -19,7 +19,7 @@ const ProductProfile = async ({ params }: Props) => {
     }
 
     return (
-        <div>
+        <div className='flex grid-cols-2 m-20 align-center justify-center h-screen'>
             {result ? (
                 <ProductPage product={result} />
             ) : (

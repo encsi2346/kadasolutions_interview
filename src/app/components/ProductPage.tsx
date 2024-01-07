@@ -87,8 +87,8 @@ const ProductPage = ({ product }: Props) => {
 
     return (
         <div>
-            <div className='flex grid-cols-2 m-20 align-center justify-center'>
-                <div className='w-[620px] h-[481px]'>
+            <div className='flex grid-cols-2 my-20 mr-20 align-center justify-center'>
+                <div className='w-[620px] h-[481px] mr-5'>
                     <ImageViewer images={product.images} />
                 </div>
                 <div className='space-y-3'>

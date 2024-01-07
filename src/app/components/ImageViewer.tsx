@@ -39,7 +39,7 @@ const ImageViewer = ({ images }: Props) => {
                 <BsChevronRight onClick={nextSlide} size={30} />
             </div>
 
-            <div className='flex align-center justify-center py-2'>
+            <div className='flex align-center justify-center py-5 pr-20'>
                 {images.map((slide, slideIndex) => (
                     <div
                         key={slideIndex}
@@ -47,9 +47,9 @@ const ImageViewer = ({ images }: Props) => {
                         className='text-2xl cursor-pointer'
                     >
                         {slideIndex === currentIndex ? (
-                            <RxDotFilled className='text-[#6100FF]'/>
+                            <RxDotFilled className='text-[#6100FF] text-[27px]'/>
                         ) : (
-                            <RxDotFilled className='text-[#323232]/[.6]'/>
+                            <RxDotFilled className='text-[#323232]/[.6] text-[27px]'/>
                         )}
                     </div>
                 ))}

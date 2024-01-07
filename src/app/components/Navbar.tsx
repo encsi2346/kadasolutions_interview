@@ -61,7 +61,7 @@ const Navbar = () => {
         <header>
             <div className="navbar bg-base-100">
                 <div className="flex-1">
-                    <Link className="btn btn-ghost text-xl" href='/'>kadasolutions's ecommershop</Link>
+                    <Link className="btn btn-ghost text-xl" href='/'>dummyJSON's ecommershop</Link>
                 </div>
                 <div className="flex-none">
                     <div className="dropdown dropdown-end">

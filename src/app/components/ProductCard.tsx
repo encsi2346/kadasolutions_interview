@@ -18,9 +18,9 @@ const ProductCard = ({ id, title, description, price, discountPercentage, thumbn
                 <div className="absolute top-2 right-5 rounded-full bg-[#6100FF] text-white font-[600] text-[14px] leading-[18.9px] py-1 px-4 z-10">{discountPercentage}%</div>
             </figure>
             <div className="card-body">
-                <div className="flex justify-between">
+                <div className="flex items-center gap-[4rem]">
                     <p className="text-[20px] font-[600] leading-[27px]">{title}</p>
-                    <p className="text-[24px] font-[600] leading-[32.4px] pl-20 mr-0 pr-0">{price} $</p>
+                    <p className="text-[24px] font-[600] leading-[32.4px] pl-[2rem] mr-0 pr-0">{price} $</p>
                 </div>
                 <p className="text-[14px] font-[500] leading-[18.9px] w-[218px]">{description}</p>
                 <div className="card-actions justify-center">

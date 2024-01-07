@@ -7,27 +7,47 @@ import {toast, ToastContainer} from "react-toastify";
 const AllProductPage = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [products, setProducts] = useState<Product[]>([]);
+    const [page, setPage] = useState(1);
+
+    const fetchMoreData = async () => {
+        setIsLoading(true);
+
+        try {
+            const response = await fetch(`https://dummyjson.com/products?page=${page + 1}`);
+            if (!response.ok) {
+                throw new Error('Network error or invalid response');
+            }
+            const newData = await response.json();
+
+            setProducts((prevProducts) => [...prevProducts, ...newData.products]);
+            setPage(page + 1);
+        } catch (error) {
+            console.error('Error fetching more data:', error.message);
+            toast.error('Oops, something went wrong!', {
+                position: toast.POSITION.BOTTOM_RIGHT
+            });
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     useEffect(() => {
-        const getData = async () => {
-            try {
-                const response = await fetch('https://dummyjson.com/products');
-                if (!response.ok) {
-                    toast.error('Oops, something went wrong!', {
-                        position: toast.POSITION.BOTTOM_RIGHT
-                    });
-                }
-                const productsData = await response.json();
-                setProducts(productsData.products);
-            } catch (error) {
-                toast.error('Oops, something went wrong!', {
-                    position: toast.POSITION.BOTTOM_RIGHT
-                });
-            } finally {
-                setIsLoading(false);
+        const handleScroll = () => {
+            const scrollTop = window.innerHeight + window.scrollY;
+            const scrollHeight = document.documentElement.scrollHeight;
+            const offset = 200;
+
+            if (scrollTop + offset >= scrollHeight && !isLoading) {
+                fetchMoreData();
             }
-        }
-        getData();
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [isLoading]);
+
+    useEffect(() => {
+        fetchMoreData();
     }, []);
 
   return (

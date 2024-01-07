@@ -8,7 +8,7 @@ interface Props {
 
 const AddButton = ({ text, onClick }: Props) => {
     return (
-        <button className='btn rounded-full bg-black text-white text-center py-2 px-10 my-2 text-[28px] font-[600] leading-[37.8px]'
+        <button className='rounded-full bg-black text-white text-center py-3 px-12 my-2 text-[28px] font-[600] leading-[37.8px]'
                 onClick={() => {
                     if(onClick) {
                         onClick();
