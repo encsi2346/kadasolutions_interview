@@ -11,6 +11,7 @@ import Modal from "@/app/components/Modal";
 import LoginForm from "@/app/components/LoginForm";
 import ImageViewer from "@/app/components/ImageViewer";
 import {toast, ToastContainer} from "react-toastify";
+import RatingComponent from "@/app/components/RatingComponent";
 
 interface Props {
     product: Product,
@@ -93,18 +94,21 @@ const ProductPage = ({ product }: Props) => {
                 <div className='space-y-3'>
                     <div className="flex justify-between">
                         <p className="text-[48px] font-[600] leading-[64.8px]">{product.title}</p>
-                        <p className="text-[24px] font-[600] leading-[32.4px] pl-20 mr-0 pr-0">{product.rating} $</p>
+                        <div className="flex items-center space-x-1 ml-10">
+                            <RatingComponent rating={product.rating} />
+                            <p className="text-[24px] font-[600] leading-[32.4px] pl-2 mr-0 pr-0">{product.rating}</p>
+                        </div>
                     </div>
                     <p className="text-[24px] font-[500] leading-[32.4px] w-[400px]">{product.description}</p>
                     <p className="text-[24px] font-[500] leading-[32.4px] text-black/[.6]">Stock: {product.stock}</p>
                     <p className="text-[24px] font-[500] leading-[32.4px] text-black/[.6]">Brand: {product.brand}</p>
                     <p className="text-[24px] font-[500] leading-[32.4px] text-black/[.6]">Category: {product.category}</p>
-                    <p>
-                        <a className="rounded-full bg-[#6100FF] text-white font-[600] text-[20px] leading-[27px] py-1 px-4">
-                            {product.discountPercentage}%
+                    <p className="py-5">
+                        <a className="rounded-full bg-[#6100FF] text-white font-[600] text-[20px] leading-[27px] py-2 px-6">
+                            -{product.discountPercentage}%
                         </a>
                     </p>
-                    <div className="flex justify-between align-center">
+                    <div className="flex items-center space-x-20">
                         <p className="text-[64px] font-[600] leading-[86.4px]">{product.price} $</p>
                         <AddButton text={'Add to cart'} onClick={() => handleAddToCart(product)}/>
                     </div>
