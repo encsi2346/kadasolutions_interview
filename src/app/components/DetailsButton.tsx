@@ -1,15 +1,19 @@
 'use client';
 import React from 'react';
+import { useRouter } from 'next/navigation';
 
 interface Props {
     text: string;
+    id: number;
 }
 
-const DetailsButton = ({ text }: Props) => {
+const DetailsButton = ({ text, id }: Props) => {
+    const router = useRouter();
+
     return (
-        <div>
-            <button className='btn rounded-full bg-black text-white py-0 my-2 w-[281.86px]' onClick={() => console.log('Click')}>{text}</button>
-        </div>
+        <button className='btn rounded-full bg-black text-white py-0 my-2 w-[281.86px]' onClick={() => router.push(`/pages/product/${id}`)}>
+            {text}
+        </button>
     );
 };
 

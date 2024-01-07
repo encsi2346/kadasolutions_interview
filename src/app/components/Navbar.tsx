@@ -8,12 +8,18 @@ import {auth} from "@/app/firebase";
 import { db } from "@/app/firebase";
 import { collection } from 'firebase/firestore';
 import { onSnapshot } from 'firebase/firestore';
+import Link from "next/link";
+import Modal from "@/app/components/Modal";
+import LoginForm from "@/app/components/LoginForm";
 
 const Navbar = () => {
     const userId = auth?.currentUser?.uid;
     const dispatch = useDispatch<AppDispatch>();
+    const isAuth = useAppSelector((state) => state.authReducer.value.isAuth);
     const email = useAppSelector((state) => state.authReducer.value.email);
     const [cartItems, setCartItems] = useState([]);
+    const [subtotal, setSubtotal] = useState(0);
+    const [showModal, setShowModal] = useState(false);
 
     const handleLogOut = () => {
         try{
@@ -37,11 +43,15 @@ const Navbar = () => {
         }
     }, [userId, cartItems])
 
+    useEffect(() => {
+        console.log('price', cartItems[0]);
+    }, [setCartItems])
+
     return (
         <header>
             <div className="navbar bg-base-100">
                 <div className="flex-1">
-                    <a className="btn btn-ghost text-xl">kadasolutions's ecommershop</a>
+                    <Link className="btn btn-ghost text-xl" href='/'>kadasolutions's ecommershop</Link>
                 </div>
                 <div className="flex-none">
                     <div className="dropdown dropdown-end">
@@ -54,7 +64,7 @@ const Navbar = () => {
                         <div tabIndex={0} className="mt-3 z-[1] card card-compact dropdown-content w-52 bg-base-100 shadow">
                             <div className="card-body">
                                 <span className="font-bold text-lg">{cartItems.length} Items</span>
-                                <span className="text-info">Subtotal: $999</span>
+                                <span className="text-info">Subtotal: {subtotal}</span>
                                 <div className="card-actions">
                                     <button className="btn btn-primary btn-block">View cart</button>
                                 </div>
@@ -63,16 +73,32 @@ const Navbar = () => {
                     </div>
                     <div className="dropdown dropdown-end">
                         <div tabIndex={0} role="button" className="btn btn-ghost">
-                            <a>{email}</a>
+                            <a>{isAuth ? email : (
+                                <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 16">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                          stroke-width="2"
+                                          d="M1 8h11m0 0L8 4m4 4-4 4m4-11h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3"/>
+                                </svg>
+                            )}</a>
                         </div>
                         <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
                             <li>
-                                <a onClick={handleLogOut}>Logout</a>
+                                {isAuth ? (
+                                    <a onClick={handleLogOut}>Logout</a>
+                                ) : (
+                                    <a onClick={() => setShowModal(true)}>
+                                        Login
+                                    </a>
+                                )}
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
+            <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
+                <LoginForm onClose={() => setShowModal(false)}/>
+            </Modal>
         </header>
     );
 };

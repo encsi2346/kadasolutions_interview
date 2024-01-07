@@ -24,7 +24,7 @@ const ProductCard = ({ id, title, description, price, discountPercentage, thumbn
                 </div>
                 <p className="text-[14px] font-[500] leading-[18.9px] w-[218px]">{description}</p>
                 <div className="card-actions justify-center">
-                    <DetailsButton text={'See details'} />
+                    <DetailsButton text={'See details'} id={id}/>
                 </div>
             </div>
         </div>

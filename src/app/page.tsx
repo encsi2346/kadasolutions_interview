@@ -1,20 +1,7 @@
 'use client';
 import ProductCard from "@/app/components/ProductCard";
-import {useEffect, useState} from 'react';
-
-interface Product {
-    id: number;
-    title: string;
-    description: string;
-    price: number;
-    discountPercentage: number;
-    rating: number;
-    stock: number;
-    brand: string;
-    category: string;
-    thumbnail: string;
-    images: string[];
-}
+import React, {useEffect, useState} from 'react';
+import {Product} from "../../common.types";
 
 const AllProductPage = () => {
     const [isLoading, setIsLoading] = useState(true);
