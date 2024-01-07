@@ -11,6 +11,7 @@ import { onSnapshot } from 'firebase/firestore';
 import Link from "next/link";
 import Modal from "@/app/components/Modal";
 import LoginForm from "@/app/components/LoginForm";
+import {toast, ToastContainer} from "react-toastify";
 
 const Navbar = () => {
     const userId = auth?.currentUser?.uid;
@@ -25,11 +26,18 @@ const Navbar = () => {
         try{
             signOut(auth).then(() => {
                 dispatch(logOut());
+                toast.success('You have successfully logged out!', {
+                    position: toast.POSITION.BOTTOM_RIGHT
+                });
             }).catch((error) => {
-                console.log(error);
+                toast.error('Oops, something went wrong!', {
+                    position: toast.POSITION.BOTTOM_RIGHT
+                });
             });
         } catch(error) {
-            console.log(error);
+            toast.error('Oops, something went wrong!', {
+                position: toast.POSITION.BOTTOM_RIGHT
+            });
         }
     }
 
@@ -99,6 +107,7 @@ const Navbar = () => {
             <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
                 <LoginForm onClose={() => setShowModal(false)}/>
             </Modal>
+            <ToastContainer />
         </header>
     );
 };

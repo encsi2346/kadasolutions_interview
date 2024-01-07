@@ -2,6 +2,7 @@
 import ProductCard from "@/app/components/ProductCard";
 import React, {useEffect, useState} from 'react';
 import {Product} from "../../common.types";
+import {toast, ToastContainer} from "react-toastify";
 
 const AllProductPage = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -14,11 +15,12 @@ const AllProductPage = () => {
                 if (!response.ok) {
                     throw new Error('Failed to fetch data');
                 }
-                const productsData = await response.json(); //TODO
-                console.log('response', productsData);
+                const productsData = await response.json();
                 setProducts(productsData.products);
             } catch (error) {
-                console.log(error.message);
+                toast.error('Oops, something went wrong!', {
+                    position: toast.POSITION.BOTTOM_RIGHT
+                });
             } finally {
                 setIsLoading(false);
             }
@@ -47,6 +49,7 @@ const AllProductPage = () => {
                 )
             )}
         </div>
+        <ToastContainer />
     </main>
   )
 }

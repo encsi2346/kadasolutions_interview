@@ -5,6 +5,8 @@ import {auth} from "@/app/firebase";
 import {logIn} from "@/app/redux/authSlice";
 import {useDispatch} from "react-redux";
 import {AppDispatch, useAppSelector} from "@/app/redux/store";
+import {toast, ToastContainer} from "react-toastify";
+
 
 const LoginPage = ({onClose}) => {
     const userId = auth?.currentUser?.uid;
@@ -27,33 +29,42 @@ const LoginPage = ({onClose}) => {
                     .then((userCredential) => {
                         dispatch(logIn(email));
                         handleCloseModal();
+                        toast.success('You have successfully logged in!', {
+                            position: toast.POSITION.BOTTOM_RIGHT
+                        });
                     })
                     .catch((error) => {
-                        console.log(error);
-                        console.log('didnt find email');
+                        toast.error('Wrong password or email address!', {
+                            position: toast.POSITION.BOTTOM_RIGHT
+                        });
                     });
             } catch (error) {
-                console.log(error);
+                toast.error('Oops, something went wrong!', {
+                    position: toast.POSITION.BOTTOM_RIGHT
+                });
             }
         } else if (isRegister) {
             try{
                 createUserWithEmailAndPassword(auth, email, password)
                     .then((userCredential) => {
-                        console.log('successfully registered');
+                        toast.success('You have successfully registered!', {
+                            position: toast.POSITION.BOTTOM_RIGHT
+                        });
                     })
                     .catch((error) => {
-                        console.log(error);
+                        toast.error('The registration failed!', {
+                            position: toast.POSITION.BOTTOM_RIGHT
+                        });
                     });
             } catch (error) {
-                console.log(error);
+                toast.error('Oops, something went wrong!', {
+                    position: toast.POSITION.BOTTOM_RIGHT
+                });
             }
         }
     };
 
     const handleCloseModal = () => {
-        /*if (document) {
-            (document.getElementById('login_modal') as HTMLFormElement).close();
-        }*/
         onClose();
     }
 
@@ -105,6 +116,7 @@ const LoginPage = ({onClose}) => {
                     </button>
                 </div>
             </form>
+            <ToastContainer />
         </div>
     );
 };
